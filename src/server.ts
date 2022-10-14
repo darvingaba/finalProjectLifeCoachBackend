@@ -14,6 +14,7 @@ app.post("/sign-up", async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
+    const name = req.body.name
     const realUser = await prisma.user.findUnique({ where: { email } });
 
     const errors: string[] = [];
@@ -24,6 +25,9 @@ app.post("/sign-up", async (req, res) => {
     if (typeof password !== "string") {
       errors.push("Password missing or not a string!");
     }
+    if (typeof name !== "string") {
+      errors.push("Name missing or not a string!");
+    }
     if (errors.length > 0) {
       return res.status(404).send({ errors });
     }
@@ -33,6 +37,7 @@ app.post("/sign-up", async (req, res) => {
         data: {
           email: req.body.email,
           password: hashed(password),
+          name:req.body.name
         },
       });
       const token = getToken(user.id);
@@ -45,6 +50,11 @@ app.post("/sign-up", async (req, res) => {
     res.status(404).send({ error: [error.message] });
   }
 });
+
+app.get("/users",async(req,res)=>{
+  const users = await prisma.user.findMany()
+  res.send(users)
+})
 
 app.post("/sign-in", async (req, res) => {
   try {
