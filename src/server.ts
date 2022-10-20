@@ -121,10 +121,10 @@ app.get("/workout/:id", async (req, res) => {
   });
   res.send(workout);
 });
-app.get("/workoutsDone",async(req,res)=>{
-  const doneW = await prisma.workout.findMany({where:{completed:true}})
-  res.send(doneW)
-})
+app.get("/workoutsDone", async (req, res) => {
+  const doneW = await prisma.workout.findMany({ where: { completed: true } });
+  res.send(doneW);
+});
 app.patch("/workout/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -184,7 +184,28 @@ app.patch("/usersnew/:id", async (req, res) => {
     res.status(404).send({ error: error.message });
   }
 });
+app.get("/subscriptions", async (req, res) => {
+  
+  const subscriptions = await prisma.subscription.findMany();
+  res.send(subscriptions);
+});
+app.get("/subscriptionDone", async (req, res) => {
+  const subscriptions = await prisma.subscription.findFirst({where:{booked:true}});
+  res.send(subscriptions)
+});
+app.get("/subscriptions/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  const subscriptions = await prisma.subscription.findUnique({where:{id}});
+  res.send(subscriptions)
+});
 
+app.patch("/subscriptions/:id", async (req, res) => {
+  const updated = await prisma.subscription.update({
+    where: { id:Number(req.params.id) },
+    data: { booked: true },
+  });
+  res.send(updated)
+});
 app.listen(port, () => {
-  console.log("server up");
+  console.log("server up")
 });

@@ -37,3 +37,9 @@ model Trainers {
   image   String
   clients User[]
 }
+model Subscription{
+  id Int @id @default(autoincrement())
+  name String
+  price Int
+  booked Boolean
+}
