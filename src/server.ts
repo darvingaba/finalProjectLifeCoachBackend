@@ -6,7 +6,7 @@ import { currentUser, getToken, hashed, verify } from "./helpers";
 import bcrypt from "bcryptjs";
 
 const app = express();
-app.use(cors());
+app.use(cors())
 app.use(express.json());
 const prisma = new PrismaClient();
 const port = 3456;
