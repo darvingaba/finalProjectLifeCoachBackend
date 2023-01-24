@@ -9,7 +9,7 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 const prisma = new PrismaClient();
-const port = 3456;
+const port = process.env.PORT|| 3456;
 
 app.post("/sign-up", async (req, res) => {
   try {
